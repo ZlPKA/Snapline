@@ -38,9 +38,9 @@ function removeLine(args, line)
 		_warn("Line not found.")
 		return
 	end
-	
+
 	line:Destroy()
-	
+
 	_warn("Successfully removed Line from the table.")
 	table.remove(activeLines, index)
 end
@@ -51,38 +51,38 @@ function Snapline:draw(target, color)
 	line.Name = "Snapline" .. " / " .. target.Name
 	line.AnchorPoint = Vector2.new(0.5, 0.5)
 	line.BorderSizePixel = 0
-	
+
 	local circle = Instance.new("Frame", line)
 	circle.Size = UDim2.new(0, 10, 0, 10)
 	circle.AnchorPoint = Vector2.new(0.5, 0.5)
 	circle.Position = UDim2.new(1, 0.5)
 	circle.BackgroundColor3 = color
-	
+
 	local corner = Instance.new("UICorner", circle)
 	corner.CornerRadius = UDim.new(1, 0)
-	
+
 	local outline = Instance.new("UIStroke", circle)
-	
-	
+
+
 	local args = {
 		Line = line,
 		LineColor = color,
 		Destination = target,
 	}
-	
+
 	table.insert(activeLines, args)
-	
+
 	local ancestryChanged = target.AncestryChanged:Once(function()
 		removeLine(args, line)
 	end)
-	
+
 	local functions = {}
-	
+
 	function functions:Remove()
 		removeLine(args, line)
 		ancestryChanged:Disconnect()
 	end
-	
+
 	return functions
 end
 
@@ -106,23 +106,23 @@ function updateLines()
 		local line:Frame = lineTable.Line
 		local lineColor = lineTable.LineColor
 		local target = lineTable.Destination
-		
+
 		local destination
-		
+
 		local isModel = target:IsA("Model")
 		if isModel then
 			target = target:GetPivot()
 		end
-		
+
 		local screenPoint, onScreen = camera:WorldToScreenPoint(target.Position)
 		destination = Vector2.new(screenPoint.X, screenPoint.Y)
-		
+
 		if not onScreen then
 			line.Visible = false
 		else
 			line.Visible = true
 		end
-		
+
 		setLine(line, lineColor, lineOrigin, destination)
 	end
 end
@@ -134,7 +134,7 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 	end
 
 	if input.KeyCode == Enum.KeyCode.P then
-		gui.Enabled = gui.Enabled and false or true
+		gui.Enabled = gui.Enabled ~= false and true or false
 	end
 end)
 
