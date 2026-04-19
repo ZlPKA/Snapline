@@ -9,12 +9,17 @@
 local RunService = game:GetService("RunService")
 local CoreGui = game:GetService("CoreGui")
 local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+
+
+local localPlayer = Players.LocalPlayer
 
 
 local camera = workspace.CurrentCamera
 
 
-local gui = Instance.new("ScreenGui", CoreGui)
+local gui = Instance.new("ScreenGui", RunService:IsStudio() and localPlayer.PlayerGui or CoreGui)
 gui.Name = "Snapline"
 
 
@@ -134,7 +139,7 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 	end
 
 	if input.KeyCode == Enum.KeyCode.P then
-		gui.Parent = gui.Parent == CoreGui and nil or CoreGui
+		gui.Enabled = gui.Enabled == false and true or false
 	end
 end)
 
