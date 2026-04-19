@@ -58,7 +58,7 @@ function Snapline:draw(target, color)
 	line.BorderSizePixel = 0
 
 	local circle = Instance.new("Frame", line)
-	circle.Size = UDim2.new(0, 10, 0, 10)
+	circle.Size = UDim2.new(0, 5, 0, 5)
 	circle.AnchorPoint = Vector2.new(0.5, 0.5)
 	circle.Position = UDim2.new(1, 0.5)
 	circle.BackgroundColor3 = color
