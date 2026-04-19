@@ -12,27 +12,20 @@ local Players = game:GetService("Players")
 
 local localPlayer = Players.LocalPlayer
 
-
 local camera = workspace.CurrentCamera
-
 
 local gui = Instance.new("ScreenGui", localPlayer.PlayerGui)
 gui.Name = "Snapline"
 
-
 local lineOrigin = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y * 0.9)
-
 
 local activeLines = {}
 
-
 local Snapline = {} -- main module
-
 
 function _warn(text)
 	warn("Snapline Library: // " .. text)
 end
-
 
 function removeLine(args, line)
 	local index = table.find(activeLines, args)
@@ -47,8 +40,7 @@ function removeLine(args, line)
 	table.remove(activeLines, index)
 end
 
-
-function Snapline.draw(part:BasePart, color)
+function Snapline:draw(part:BasePart, color)
 	if not part:IsA("BasePart") then
 		_warn("This is not a part, you fucking retarted.")
 		return
@@ -82,7 +74,6 @@ function Snapline.draw(part:BasePart, color)
 	return functions
 end
 
-
 function setLine(line, lineColor, origin, destination)
 	local position = (origin + destination) / 2
 	line.Position = UDim2.new(0, position.X, 0, position.Y)
@@ -91,11 +82,9 @@ function setLine(line, lineColor, origin, destination)
 	line.Rotation = math.deg(math.atan2(destination.Y - origin.Y, destination.X - origin.X))
 end
 
-
 camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
 	lineOrigin = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y * 0.9)
 end)
-
 
 function updateLines()
 	for _, lineTable in activeLines do
@@ -118,8 +107,6 @@ function updateLines()
 	end
 end
 
-
 RunService.RenderStepped:Connect(updateLines)
-
 
 return Snapline
