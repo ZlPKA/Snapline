@@ -4,9 +4,6 @@
 -- // Have fun
 
 
--- IT'S NOT FINISHED!!! DON'T FORGET TO FINISH IT, YOU FUCKING FATTY!
-
-
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 
