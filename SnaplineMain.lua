@@ -97,7 +97,7 @@ function setLine(line, lineColor, origin, destination)
 	line.Position = UDim2.new(0, position.X, 0, position.Y)
 	line.Size = UDim2.new(0, (origin - destination).Magnitude, 0, 1)
 	line.BackgroundColor3 = lineColor
-	line.BackgroundTransparency = 0.75
+	line.BackgroundTransparency = 0.5
 	line.Rotation = math.deg(math.atan2(destination.Y - origin.Y, destination.X - origin.X))
 end
 
