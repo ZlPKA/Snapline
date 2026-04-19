@@ -7,15 +7,13 @@
 
 
 local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
-
-local localPlayer = Players.LocalPlayer
+local CoreGui = game:GetService("CoreGui")
 
 
 local camera = workspace.CurrentCamera
 
 
-local gui = Instance.new("ScreenGui", localPlayer.PlayerGui)
+local gui = Instance.new("ScreenGui", CoreGui)
 gui.Name = "Snapline"
 
 
