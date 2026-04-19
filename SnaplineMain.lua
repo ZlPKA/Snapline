@@ -129,11 +129,13 @@ end
 
 
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
-		if gameProcessed then return end
+	if gameProcessed then
+		return
+	end
 
-		if input.KeyCode.Name == "P" then
-			gui.Enabled = gui.Enabled and false or true
-		end
+	if input.KeyCode == Enum.KeyCode.P then
+		gui.Enabled = gui.Enabled and false or true
+	end
 end)
 
 
