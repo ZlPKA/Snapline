@@ -134,7 +134,7 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 	end
 
 	if input.KeyCode == Enum.KeyCode.P then
-		gui.Enabled = gui.Enabled ~= false and true or false
+		gui.Parent = gui.Parent == CoreGui and nil or CoreGui
 	end
 end)
 
