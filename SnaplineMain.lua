@@ -1,7 +1,9 @@
+
 -- // Made with love and my fucking half-broken keyboard.
 -- // Don't have to be credited, so you can use it if you want, I don't really care lmao.
 -- // I don't know the original creator, but I edited the script and optimized it.
--- // Have fun
+
+-- // Have fun!
 
 
 local RunService = game:GetService("RunService")
@@ -9,20 +11,27 @@ local Players = game:GetService("Players")
 
 local localPlayer = Players.LocalPlayer
 
+
 local camera = workspace.CurrentCamera
+
 
 local gui = Instance.new("ScreenGui", localPlayer.PlayerGui)
 gui.Name = "Snapline"
 
+
 local lineOrigin = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y * 0.9)
+
 
 local activeLines = {}
 
+
 local Snapline = {} -- main module
+
 
 function _warn(text)
 	warn("Snapline Library: // " .. text)
 end
+
 
 function removeLine(args, line)
 	local index = table.find(activeLines, args)
@@ -37,27 +46,34 @@ function removeLine(args, line)
 	table.remove(activeLines, index)
 end
 
-function Snapline:draw(part:BasePart, color)
-	if not part:IsA("BasePart") then
-		_warn("This is not a part, you fucking retarted.")
-		return
-	end
-	
+
+function Snapline:draw(target, color)
 	local line = Instance.new("Frame", gui)
-	line.Name = "Snapline" .. " / " .. part.Name
+	line.Name = "Snapline" .. " / " .. target.Name
 	line.AnchorPoint = Vector2.new(0.5, 0.5)
 	line.BorderSizePixel = 0
+	
+	local circle = Instance.new("Frame", line)
+	circle.Size = UDim2.new(0, 10, 0, 10)
+	circle.AnchorPoint = Vector2.new(0.5, 0.5)
+	circle.Position = UDim2.new(1, 0.5)
+	circle.BackgroundColor3 = color
+	
+	local corner = Instance.new("UICorner", circle)
+	corner.CornerRadius = UDim.new(1, 0)
+	
+	local outline = Instance.new("UIStroke", circle)
+	
 	
 	local args = {
 		Line = line,
 		LineColor = color,
-	--	LineOrigin = lineOrigin,
-		Destination = part,
+		Destination = target,
 	}
 	
 	table.insert(activeLines, args)
 	
-	local ancestryChanged = part.AncestryChanged:Once(function()
+	local ancestryChanged = target.AncestryChanged:Once(function()
 		removeLine(args, line)
 	end)
 	
@@ -71,6 +87,7 @@ function Snapline:draw(part:BasePart, color)
 	return functions
 end
 
+
 function setLine(line, lineColor, origin, destination)
 	local position = (origin + destination) / 2
 	line.Position = UDim2.new(0, position.X, 0, position.Y)
@@ -79,20 +96,27 @@ function setLine(line, lineColor, origin, destination)
 	line.Rotation = math.deg(math.atan2(destination.Y - origin.Y, destination.X - origin.X))
 end
 
+
 camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
 	lineOrigin = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y * 0.9)
 end)
+
 
 function updateLines()
 	for _, lineTable in activeLines do
 		local line:Frame = lineTable.Line
 		local lineColor = lineTable.LineColor
+		local target = lineTable.Destination
 		
-		local targetPart = lineTable.Destination
+		local destination
 		
-		local screenPoint, onScreen = camera:WorldToScreenPoint(targetPart.Position)
+		local isModel = target:IsA("Model")
+		if isModel then
+			target = target:GetPivot()
+		end
 		
-		local destination = Vector2.new(screenPoint.X, screenPoint.Y)
+		local screenPoint, onScreen = camera:WorldToScreenPoint(target.Position)
+		destination = Vector2.new(screenPoint.X, screenPoint.Y)
 		
 		if not onScreen then
 			line.Visible = false
@@ -104,6 +128,8 @@ function updateLines()
 	end
 end
 
+
 RunService.RenderStepped:Connect(updateLines)
+
 
 return Snapline
