@@ -83,7 +83,7 @@ function Snapline:draw(target, color)
 
 	local functions = {}
 
-	function functions:Remove()
+	function functions:remove()
 		removeLine(args, line)
 		ancestryChanged:Disconnect()
 	end
